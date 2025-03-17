@@ -11,10 +11,10 @@ const (
 	envProd  = "prod"
 )
 
-func NewLogger(logLevel string) *slog.Logger {
+func NewLogger(envLevel string) *slog.Logger {
 	var log *slog.Logger
 
-	switch logLevel {
+	switch envLevel {
 	case envLocal:
 		log = slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	case envDev:

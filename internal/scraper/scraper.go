@@ -14,19 +14,19 @@ type Scraper interface {
 	ScrapeCategory(url string) (string, error)
 }
 
-type SamokatScraper struct {
+type samokatScraper struct {
 	Config config.ConfigProvider
 	logger *slog.Logger
 }
 
-func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger) *SamokatScraper {
-	return &SamokatScraper{
+func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger) *samokatScraper {
+	return &samokatScraper{
 		Config: cfg,
 		logger: log,
 	}
 }
 
-func (ss *SamokatScraper) ScrapeCategory(url string) (string, error) {
+func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 	op := "scraper.SamokatScraper.ScraperCategory"
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
@@ -51,7 +51,7 @@ func (ss *SamokatScraper) ScrapeCategory(url string) (string, error) {
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(url),
 		chromedp.WaitVisible(`body`, chromedp.ByQuery),
-		chromedp.Sleep(ss.Config.GetRequestDelay()*time.Second),
+		chromedp.Sleep(2*time.Second),
 		chromedp.OuterHTML("html", &html),
 	)
 

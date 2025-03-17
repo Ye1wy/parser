@@ -11,7 +11,7 @@ import (
 )
 
 type ParserHTML interface {
-	ParseHTML(html string)
+	ParseHTML(html string) []models.Product
 }
 
 type SamokatParser struct {
@@ -26,13 +26,13 @@ func NewSamokatParser(cfg config.ConfigProvider, log *slog.Logger) *SamokatParse
 	}
 }
 
-func (sp *SamokatParser) ParseHTML(html string) ([]models.Product, error) {
+func (sp *SamokatParser) ParseHTML(html string) []models.Product {
 	op := "scraper.SamokatParser.ParseHTML"
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
 		sp.logger.Error("Failed to parse HTML: %v", logger.Err(err), "op", op)
-		return nil, err
+		return nil
 	}
 
 	// maybe worst: if classes in html is changes then scraping needed update
@@ -55,11 +55,11 @@ func (sp *SamokatParser) ParseHTML(html string) ([]models.Product, error) {
 	doc.Find(productLinkClass).Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
 		if exists {
-			productLinks = append(productLinks, "https://samokat.ru/"+href)
+			productLinks = append(productLinks, "https://samokat.ru"+href)
 		}
 	})
 
-	for i := 0; i <= len(productNames) && i <= len(productPrices) && i <= len(productLinks); i++ {
+	for i := 0; i < len(productNames) && i < len(productPrices) && i < len(productLinks); i++ {
 		product := models.Product{
 			Name:  productNames[i],
 			Price: productPrices[i],
@@ -69,5 +69,5 @@ func (sp *SamokatParser) ParseHTML(html string) ([]models.Product, error) {
 		products = append(products, product)
 	}
 
-	return products, nil
+	return products
 }
