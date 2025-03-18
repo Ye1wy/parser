@@ -12,13 +12,17 @@ func main() {
 	log.Print("Starting scraper")
 
 	cfg := config.MustLoad()
+	log.Print("Config is loaded")
 	log := logger.NewLogger("local")
+	log.Info("Logger is created")
 
 	scrap := scraper.NewSamokatScraper(cfg, log)
+	log.Info("Scraper is created")
 	parser := scraper.NewSamokatParser(cfg, log)
-	categories := "https://samokat.ru/category/vsya-gotovaya-eda-6"
+	log.Info("Parser is created")
+	categories := cfg.GetCategories()
 
-	htmlPage, err := scrap.ScrapeCategory(categories)
+	htmlPage, err := scrap.ScrapeCategory(categories[0])
 	if err != nil {
 		fmt.Println("Something is wrong")
 		return

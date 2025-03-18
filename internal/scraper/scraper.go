@@ -15,13 +15,13 @@ type Scraper interface {
 }
 
 type samokatScraper struct {
-	Config config.ConfigProvider
+	config config.ConfigProvider
 	logger *slog.Logger
 }
 
 func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger) *samokatScraper {
 	return &samokatScraper{
-		Config: cfg,
+		config: cfg,
 		logger: log,
 	}
 }
@@ -30,7 +30,7 @@ func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 	op := "scraper.SamokatScraper.ScraperCategory"
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", ss.Config.GetOptHeadless()),
+		chromedp.Flag("headless", ss.config.GetOptHeadless()),
 		chromedp.Flag("disable-gpu", true),
 		chromedp.Flag("no-sandbox", true),
 		chromedp.Flag("disable-blink-features", "AutomationControlled"),
@@ -48,13 +48,18 @@ func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 	ss.logger.Info("trying to enter... ", "op", op)
 
 	var html string
-	err := chromedp.Run(ctx,
+	delay, err := time.ParseDuration(ss.config.GetRequestDelay())
+	if err != nil {
+		ss.logger.Error("Failed convert request delay from string to int", logger.Err(err), "op", op)
+		delay = 5 * time.Second
+	}
+
+	err = chromedp.Run(ctx,
 		chromedp.Navigate(url),
 		chromedp.WaitVisible(`body`, chromedp.ByQuery),
-		chromedp.Sleep(2*time.Second),
+		chromedp.Sleep(delay),
 		chromedp.OuterHTML("html", &html),
 	)
-
 	if err != nil {
 		ss.logger.Error("Error in run to website: ", logger.Err(err), "op", op)
 		return "", err
