@@ -69,7 +69,7 @@ func (sp *SamokatParser) ParseHTML(html string) []models.Product {
 		products = append(products, product)
 	}
 
-	sp.logger.Info("All products is parsed and retrived", "op", op)
+	sp.logger.Info("All products is parsed and retrieved", "op", op)
 
 	return products
 }
