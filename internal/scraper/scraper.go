@@ -15,8 +15,9 @@ type Scraper interface {
 }
 
 type samokatScraper struct {
-	config config.ConfigProvider
-	logger *slog.Logger
+	config   config.ConfigProvider
+	logger   *slog.Logger
+	proxyUrl string
 }
 
 func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger) *samokatScraper {
@@ -24,6 +25,10 @@ func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger) *samokatScra
 		config: cfg,
 		logger: log,
 	}
+}
+
+func (ss *samokatScraper) ChangeProxy(newProxyUrl string) {
+	ss.proxyUrl = newProxyUrl
 }
 
 func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
@@ -37,15 +42,17 @@ func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"),
 	)
 
+	if ss.proxyUrl != "" {
+		opts = append(opts, chromedp.Flag("proxy-server", ss.proxyUrl))
+	}
+
 	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancel()
 
 	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
 
-	ss.logger.Info("Created chromedp new context", "op", op)
-
-	ss.logger.Info("trying to enter... ", "op", op)
+	ss.logger.Info("Trying to enter... ", "op", op)
 
 	var html string
 	delay, err := time.ParseDuration(ss.config.GetRequestDelay())
