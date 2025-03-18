@@ -11,17 +11,37 @@ import (
 )
 
 type ConfigProvider interface {
+	OptionsInfo
+	ProxiesInfo
+	RetriveTargetsInfo
+	StorageInfo
+}
+
+type OptionsInfo interface {
 	GetOptHeadless() bool
 	GetRequestDelay() string
+}
+
+type ProxiesInfo interface {
 	GetProxies() []string
+}
+
+type RetriveTargetsInfo interface {
 	GetCategories() []string
+	GetTarget() string
+}
+
+type StorageInfo interface {
+	GetPathOutputData() string
 }
 
 type config struct {
-	Headless     bool     `env:"HEADLESS" envDefault:"true"`
-	RequestDelay string   `env:"REQUEST_DELAY" envDefault:"5"`
-	Proxies      []string `env:"PROXIES" envSeparator:","`
-	Categories   []string `json:"categories"`
+	Headless       bool     `env:"HEADLESS" envDefault:"true"`
+	RequestDelay   string   `env:"REQUEST_DELAY" envDefault:"5"`
+	Proxies        []string `env:"PROXIES" envSeparator:","`
+	Categories     []string `json:"categories"`
+	Target         string   `json:"target"`
+	PathDataOutput string   `env:"DATA_OUTPUT" envDefault:"./output"`
 }
 
 func MustLoad() *config {
@@ -66,4 +86,12 @@ func (c *config) GetProxies() []string {
 
 func (c *config) GetCategories() []string {
 	return c.Categories
+}
+
+func (c *config) GetTarget() string {
+	return c.Target
+}
+
+func (c *config) GetPathOutputData() string {
+	return c.PathDataOutput
 }
