@@ -7,10 +7,12 @@ require (
 	github.com/caarlos0/env/v10 v10.0.0
 	github.com/chromedp/chromedp v0.13.1
 	github.com/lpernett/godotenv v0.0.0-20230527005122-0de1d4c5ef5e
+	github.com/tebeka/selenium v0.9.9
 )
 
 require (
 	github.com/andybalholm/cascadia v1.3.3 // indirect
+	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/chromedp/cdproto v0.0.0-20250311215558-29dfcc2791de // indirect
 	github.com/chromedp/sysutil v1.1.0 // indirect
 	github.com/go-json-experiment/json v0.0.0-20250223041408-d3c622f1b874 // indirect

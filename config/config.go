@@ -10,6 +10,10 @@ import (
 	"github.com/lpernett/godotenv"
 )
 
+const (
+	targetsInfoFile = "./config/targets.json"
+)
+
 type ConfigProvider interface {
 	OptionsInfo
 	ProxiesInfo
@@ -60,7 +64,7 @@ func MustLoad() *config {
 		cfg.Proxies[i] = strings.TrimSpace(proxy)
 	}
 
-	reader, err := os.ReadFile("targets.json")
+	reader, err := os.ReadFile(targetsInfoFile)
 	if err != nil {
 		log.Fatalf("Failed to open catalog of targets: %v,  %s", err, op)
 	}

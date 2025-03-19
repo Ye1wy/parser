@@ -70,14 +70,19 @@ func (sJ *storageJson) ReadFile(path string) (*os.File, error) {
 
 	sJ.log.Info("Opened", "file", path, "op", op)
 
+	return file, nil
+}
+
+func (sJ *storageJson) ClearFile(path string) error {
+	op := "storage.storageJson.ClearFile"
+
 	if err := os.Truncate(path, 0); err != nil {
 		sJ.log.Error("Failed to truncate", logger.Err(err), "op", op)
-		return nil, err
+		return err
 	}
 
 	sJ.log.Info("Cleared", "file", path, "op", op)
-
-	return file, nil
+	return nil
 }
 
 func (sJ *storageJson) Save(product []models.Product, file *os.File) {
