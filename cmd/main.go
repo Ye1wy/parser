@@ -32,25 +32,28 @@ func main() {
 	saver := storage.NewStorageJson(cfg, log)
 	log.Info("Storage is created")
 
-	path, err := saver.CreateFile("category")
-	if err != nil {
-		os.Exit(1)
+	for _, category := range cfg.Categories {
+		path, err := saver.CreateFile(category[28:])
+		if err != nil {
+			os.Exit(1)
+		}
+
+		file, err := saver.ReadFile(path)
+		if err != nil {
+			os.Exit(1)
+		}
+
+		categories := cfg.GetCategories()
+
+		htmlPage, err := scrap.ScrapeCategory(categories[0])
+		if err != nil {
+			os.Exit(1)
+		}
+
+		products := parser.ParseHTML(htmlPage)
+		saver.ClearFile(path)
+		saver.Save(products, file)
+
+		file.Close()
 	}
-
-	file, err := saver.ReadFile(path)
-	if err != nil {
-		os.Exit(1)
-	}
-	defer file.Close()
-
-	categories := cfg.GetCategories()
-
-	htmlPage, err := scrap.ScrapeCategory(categories[0])
-	if err != nil {
-		os.Exit(1)
-	}
-
-	products := parser.ParseHTML(htmlPage)
-	saver.ClearFile(path)
-	saver.Save(products, file)
 }

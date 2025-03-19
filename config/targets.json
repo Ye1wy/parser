@@ -1,6 +1,12 @@
 {
     "target": "samokat",
     "categories": [
-        "https://samokat.ru/category/vsya-gotovaya-eda-6"
+        "https://samokat.ru/category/vsya-gotovaya-eda-6",
+        "https://samokat.ru/category/ovoshchi-griby-i-zelen",
+        "https://samokat.ru/category/frukty-i-yagody-1",
+        "https://samokat.ru/category/molochnoe-i-yaytsa",
+        "https://samokat.ru/category/yogurty-i-deserty",
+        "https://samokat.ru/category/syr",
+        "https://samokat.ru/category/khleb-3"
     ]
 }
