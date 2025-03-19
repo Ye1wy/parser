@@ -31,8 +31,10 @@ func main() {
 	log.Info("Parser is created")
 	saver := storage.NewStorageJson(cfg, log)
 	log.Info("Storage is created")
+	categories := cfg.GetCategories()
+	log.Info("Start scraping")
 
-	for _, category := range cfg.Categories {
+	for i, category := range categories {
 		path, err := saver.CreateFile(category[28:])
 		if err != nil {
 			os.Exit(1)
@@ -43,9 +45,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		categories := cfg.GetCategories()
-
-		htmlPage, err := scrap.ScrapeCategory(categories[0])
+		htmlPage, err := scrap.ScrapeCategory(categories[i])
 		if err != nil {
 			os.Exit(1)
 		}

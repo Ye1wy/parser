@@ -1,2 +1,36 @@
 # Scraper for web site
-## Now uses for samokat.ru
+#### Now uses for samokat.ru
+## Installation
+### For scrap needed .env file like example.env on root directory of this project
+```
+cp example.env .env
+```
+### For proxy rotation needed proxy_list.json on config directory
+```
+touch config/proxy_list.json
+```
+### Example proxy_list:
+```
+[
+    {
+        "host": "your.proxy.address",
+        "port": your.proxy.port,
+        "username": "login_on_proxy_server",
+        "password": "password_on_proxy_server",
+        "type": "your_proxy_protocol_type" #sock5, http, httpss
+    },
+    {
+        "host": "your.proxy.address",
+        "port": your.proxy.port,
+        "username": "login_on_proxy_server",
+        "password": "password_on_proxy_server",
+        "type": "your_proxy_protocol_type" #sock5, http, httpss
+    },
+    ...
+]
+```
+
+## Run
+```
+go run cmd/main.go
+```
