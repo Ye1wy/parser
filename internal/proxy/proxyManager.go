@@ -64,9 +64,7 @@ func (pm *ProxyManager) GetRandomProxy() *proxyes {
 		return nil
 	}
 
-	pm.logger.Info("len of proxies", "len", len(pm.proxies), "op", "getrand")
 	randomNum := rand.IntN(len(pm.proxies))
-	pm.logger.Info("rand num", "num", randomNum, "op", "getrand")
 
 	return &pm.proxies[randomNum]
 }

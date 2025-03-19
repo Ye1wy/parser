@@ -15,7 +15,7 @@ func main() {
 
 	cfg := config.MustLoad()
 	log.Print("Config is loaded")
-	log := logger.NewLogger("local")
+	log := logger.NewLogger(cfg.GetEnvParameter())
 	log.Info("Logger is created")
 
 	proxyManager := proxy.NewProxyManager(log)

@@ -16,7 +16,9 @@ import (
 )
 
 const (
-	seleniumHost = "http://localhost:4444/wd/hub"
+	seleniumHost     = "http://localhost:4444/wd/hub"
+	seleniumPort     = 4444
+	chromeDriverPath = "/usr/bin/chromedriver"
 )
 
 type Scraper interface {
@@ -40,10 +42,9 @@ func NewSamokatScraper(cfg config.ConfigProvider, log *slog.Logger, pm *proxy.Pr
 func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 	op := "scraper.samokatScraper.ScrapeCategory"
 	ss.logger.Info("Start selenium driver", "op", op)
-	chromeDriverPath := "/usr/bin/chromedriver"
 	userAgent := "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36"
 	userAgentFlag := fmt.Sprintf("--user-agent=%s", userAgent)
-	service, err := selenium.NewChromeDriverService(chromeDriverPath, 4444)
+	service, err := selenium.NewChromeDriverService(chromeDriverPath, seleniumPort)
 	if err != nil {
 		ss.logger.Error("Error starting ChromeDriver", logger.Err(err), "op", op)
 	}

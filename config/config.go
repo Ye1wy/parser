@@ -15,6 +15,7 @@ const (
 )
 
 type ConfigProvider interface {
+	GetEnvParameter() string
 	OptionsInfo
 	ProxiesInfo
 	RetriveTargetsInfo
@@ -40,6 +41,7 @@ type StorageInfo interface {
 }
 
 type config struct {
+	Env            string   `env:"env" envDefault:"local"`
 	Headless       bool     `env:"HEADLESS" envDefault:"true"`
 	RequestDelay   string   `env:"REQUEST_DELAY" envDefault:"5"`
 	Proxies        []string `env:"PROXIES" envSeparator:","`
@@ -74,6 +76,10 @@ func MustLoad() *config {
 	}
 
 	return &cfg
+}
+
+func (c *config) GetEnvParameter() string {
+	return c.Env
 }
 
 func (c *config) GetOptHeadless() bool {
