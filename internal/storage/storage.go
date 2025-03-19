@@ -32,7 +32,7 @@ func (sJ *storageJson) CreateFile(category string) (string, error) {
 
 	if _, err := os.Stat(sJ.cfg.GetPathOutputData()); os.IsNotExist(err) {
 		os.Mkdir(sJ.cfg.GetPathOutputData(), os.ModePerm)
-		sJ.log.Info("Created", "dir", sJ.cfg.GetPathOutputData(), "op", op)
+		sJ.log.Debug("Created", "dir", sJ.cfg.GetPathOutputData(), "op", op)
 	}
 
 	fileName := sJ.cfg.GetPathOutputData() + category + ".json"
@@ -45,10 +45,10 @@ func (sJ *storageJson) CreateFile(category string) (string, error) {
 			return "", err
 		}
 
-		sJ.log.Info("Created", "file", fileName, "op", op)
+		sJ.log.Debug("Created", "file", fileName, "op", op)
 	}
 
-	sJ.log.Info("Path is saved", "file name", fileName, "op", op)
+	sJ.log.Debug("Path is saved", "file name", fileName, "op", op)
 
 	return fileName, nil
 }
@@ -68,7 +68,7 @@ func (sJ *storageJson) ReadFile(path string) (*os.File, error) {
 		return nil, err
 	}
 
-	sJ.log.Info("Opened", "file", path, "op", op)
+	sJ.log.Debug("Opened", "file", path, "op", op)
 
 	return file, nil
 }
@@ -81,7 +81,7 @@ func (sJ *storageJson) ClearFile(path string) error {
 		return err
 	}
 
-	sJ.log.Info("Cleared", "file", path, "op", op)
+	sJ.log.Debug("Cleared", "file", path, "op", op)
 	return nil
 }
 

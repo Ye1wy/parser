@@ -96,7 +96,7 @@ func (ss *samokatScraper) ScrapeCategory(url string) (string, error) {
 		return "", err
 	}
 	defer func() {
-		ss.logger.Info("Quitting webdriver")
+		ss.logger.Debug("Quitting webdriver")
 		if err := wd.Quit(); err != nil {
 			ss.logger.Error("Error quitting webdriver", logger.Err(err), "op", op)
 		}
