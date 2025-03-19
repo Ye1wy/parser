@@ -1,0 +1,9 @@
+[
+    {
+        "host": "address",
+        "port": port,
+        "username": "login",
+        "password": "password",
+        "type": "protocol_type"
+    }
+]
