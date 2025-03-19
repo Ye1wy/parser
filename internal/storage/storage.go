@@ -94,4 +94,6 @@ func (sJ *storageJson) Save(product []models.Product, file *os.File) {
 		sJ.log.Error("Failed encode product to json file", logger.Err(err), "op", op)
 		return
 	}
+
+	sJ.log.Info("All products is saved in file", "op", op)
 }
